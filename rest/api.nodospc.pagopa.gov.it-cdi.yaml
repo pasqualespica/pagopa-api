@@ -1,0 +1,681 @@
+openapi: 3.0.2
+info:
+  title: 'API NODO-SPC: Catalogo Dati e Servizi dei PSP'
+  version: 0.0.1
+  description: ''
+  termsOfService: 'http://swagger.io/terms/'
+  x-logo:
+    url: ''
+servers:
+  - url: 'https://{env}/rest/catalogo/{version}'
+    description: 'Endpoint URL'
+    variables:
+      env:
+        default: api.nodospc.pagopa.gov.it
+        enum:
+          - 'api.nodospc.pagopa.gov.it' #PROD
+          - 'test-api.nodospc.pagopa.gov.it' #UAT
+          - 'sit-api.nodospc.pagopa.gov.it' #SIT
+      version:
+        default: v0
+        description: Versione della API NODO-SPC
+paths:
+  /cdi:
+    summary: Operazioni su collection di risorse di tipo “Informativa”
+    get:
+      tags:
+        - catalogo-dati-informativi
+      parameters:
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/CollectionCdiPspInformativa'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getCatalogoDatiInformativi
+      summary: Get risorse nel “Catalogo Dati Informativi”
+  /cdi/informative-psp:
+    summary: Operazioni su collection di risorse di tipo “CdiPspInformativa”
+    get:
+      tags:
+        - informative-psp
+      parameters:
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/CollectionCdiPspInformativa'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getInformativePspList
+      summary: Get collection a risorse di tipo “CdiPspInformativa”
+  /cdi/informative-psp/{idPsp}:
+    summary: Operazioni su risorsa di tipo “CdiPspInformativa”
+    get:
+      tags:
+        - informative-psp
+      parameters:
+        - $ref: '#/components/parameters/idPsp'
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdiPspInformativa'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getInformativaPsp
+      summary: Get risorsa di tipo “CdiPspInformativa” con idPsp specificato
+  /cdi/informative-psp/{idPsp}/sps:
+    summary: Operazioni su sub-collection di risorse di tipo “CdiPspServizioPagamento”
+    get:
+      tags:
+        - servizi-pagamento-psp
+      parameters:
+        - $ref: '#/components/parameters/idPsp'
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/SubCollectionCdiPspServizioPagamento'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getPspServiziPagamentoList
+      summary: Get sub-collection di risorse di tipo “CdiPspServizioPagamento”
+  /cdi/informative-psp/{idPsp}/sps/{idPspSp}:
+    summary: Operazioni su risorsa di tipo “CdiPspServizioPagamento”
+    get:
+      tags:
+        - servizi-pagamento-psp
+      parameters:
+        - $ref: '#/components/parameters/idPsp'
+        - $ref: '#/components/parameters/idPspSp'
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdiPspServizioPagamento'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getPspServizioPagamento
+      summary: >-
+        Get risorsa di tipo “CdiPspServizioPagamento” avente nomeServizio
+        specificato
+  /cdi/informative-psp/{idPsp}/sps/{idPspSp}/fcs/{idRes}:
+    summary: Operazioni su risorsa di tipo “CdiPspFasciaCostoServizioPagamento”
+    get:
+      tags:
+        - servizi-pagamento-psp
+      parameters:
+        - $ref: '#/components/parameters/idPsp'
+        - $ref: '#/components/parameters/idPspSp'
+        - $ref: '#/components/parameters/idRes'
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdiPspFasciaCostoServizioPagamento'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getPspFasciaCostoServizioPagamento
+      summary: >-
+        Get risorsa di tipo “CdiPspFasciaCostoServizioPagamento” avente id
+        specificato
+  /cdi/informative-psp/{idPsp}/sps/{idPspSp}/info/{idRes}:
+    summary: Risorsa di tipo “CdiPspInformazioneServizioPagamento”
+    get:
+      tags:
+        - servizi-pagamento-psp
+      parameters:
+        - $ref: '#/components/parameters/idPsp'
+        - $ref: '#/components/parameters/idPspSp'
+        - $ref: '#/components/parameters/idRes'
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdiPspInformazioneServizioPagamento'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getPspInfoServizioPagamento
+      summary: >-
+        Get risorsa di tipo “CdiPspInformazioneServizioPagamento” avente id
+        specificato
+  /cdi/informative-psp/{idPsp}/sps/{idPspSp}/prefs/{idRes}:
+    summary: Operazioni su risorsa di tipo “CdiPspPreferenzaServizioPagamento”
+    get:
+      tags:
+        - servizi-pagamento-psp
+      parameters:
+        - $ref: '#/components/parameters/idPsp'
+        - $ref: '#/components/parameters/idPspSp'
+        - $ref: '#/components/parameters/idRes'
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdiPspPreferenzaServizioPagamento'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getPspPreferenzaServizioPagamento
+      summary: >-
+        Get risorsa di tipo “CdiPspPreferenzaServizioPagamento” avente id
+        specificato
+  /cs:
+    summary: Operazioni su collection di risorse di tipo “Servizi”
+    get:
+      tags:
+        - catalogo-servizi
+      parameters:
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/CollectionCsSoggetto'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getCatalogoServizi
+      summary: Get risorse nel "Catalogo Servizi"
+  /cs/{idRes}:
+    summary: Operazioni su risorsa di tipo “CsSoggetti”
+    get:
+      tags:
+        - catalogo-servizi
+      parameters:
+        - $ref: '#/components/parameters/idRes'
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CsSoggetto'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: getSoggetti
+      summary: Get risorsa di tipo “CsSoggetto” con idRes specificato
+components:
+  schemas:
+    AllowedMethods:
+      type: string
+      enum:
+        - GET
+        - HEAD
+        - POST
+        - PUT
+        - DELETE
+    Link:
+      type: object
+      properties:
+        rel:
+          type: string
+        href:
+          type: string
+          format: uri
+        type:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllowedMethods'
+      example: 
+        rel:  "self"
+        href: "/informative-psp/1234"
+        type: "[GET , POST]"
+      description: Link generico
+    LinkRisorsa:
+      type: object
+      properties:
+        uri:            
+          $ref: '#/components/schemas/Link'
+      required:
+        - uri
+      description: Link a risorsa generica
+    Risorsa:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/LinkRisorsa'
+      properties:
+        idRes:
+          type: string
+      required:
+        - idRes
+      description: Risorsa generica
+    CollectionCdiPspInformativa:
+      type: object
+      properties:
+        uri:            
+          $ref: '#/components/schemas/Link'
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkCdiPspInformativa'
+      required:
+        - uri
+        - resources
+      description: Collection di risorse di tipo "Informativa PSP" incluse nel "Catalogo Dati Informativo"
+    SubCollectionCdiPspServizioPagamento:
+      type: object
+      properties:
+        uri:            
+          $ref: '#/components/schemas/Link'
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkCdiPspServizioPagamento'
+      required:
+        - uri
+        - resources
+      description: Sub-collection di risorse di tipo "Servizio di Pagamento" associate a una risorsa di tipo "Informativa PSP"
+    LinkCdiPspInformativa:
+      description: Link a risorsa di tipo "Informativa PSP"
+      allOf:
+        - $ref: '#/components/schemas/LinkRisorsa'
+    CdiPspInformativa:
+      description: Risorsa che rappresenta una "Informativa PSP" inclusa nel "Catalogo Dati Informativi"
+      allOf:
+        - $ref: '#/components/schemas/Risorsa'
+        - type: object
+          properties:
+            identificativoPSP:
+              type: string
+            ragioneSociale:
+              type: string
+            codiceABI:
+              type: string
+            codiceBIC:
+              type: string
+            dataPubblicazione:
+              format: date-time
+              type: string
+            dataInizioValidita:
+              format: date-time
+              type: string
+            urlInformazioniPSP:
+              type: string
+            links:       
+              type: array
+              items:
+                $ref: '#/components/schemas/LinkCdiPspServizioPagamento'
+    LinkCdiPspServizioPagamento:
+      description: Link a risorsa di tipo CdiPspServizioPagamento
+      allOf:
+        - $ref: '#/components/schemas/LinkRisorsa'
+    CdiPspServizioPagamento:
+      description: >-
+        Risorsa che rappresenta un "Servizio di Pagamento" di una "Informativa PSP"
+      allOf:
+        - $ref: '#/components/schemas/Risorsa'
+        - type: object
+          properties:
+            nomeServizio:
+              type: string
+            priorita:
+              format: int64
+              type: integer
+            modelloDiPagamento:
+              format: int64
+              type: integer
+            canaleApp:
+              format: int64
+              type: integer
+            tags:
+              type: string
+            links:       
+              type: array
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/LinkCdiPspInformazioneServizioPagamento'
+                  - $ref: '#/components/schemas/LinkCdiPspFasciaCostoServizioPagamento'
+                  - $ref: '#/components/schemas/LinkCdiPspPreferenzaServizioPagamento'
+    LinkCdiPspInformazioneServizioPagamento:
+      description: Link a risorsa di tipo CdiPspInformazioneServizioPagamento
+      allOf:
+        - $ref: '#/components/schemas/LinkRisorsa'
+    CdiPspInformazioneServizioPagamento:
+      description: >-
+        Risorsa che rappresenta le "Informazioni" di un "Servizio di Pagamento"
+        di una "Informativa PSP"
+      allOf:
+        - $ref: '#/components/schemas/Risorsa'
+        - type: object
+          properties:
+            codiceLingua:
+              type: string
+            descrizioneServizio:
+              type: string
+            disponibilitaServizio:
+              type: string
+            urlInformazioneCanale:
+              type: string
+    LinkCdiPspFasciaCostoServizioPagamento:
+      description: Link a risorsa di tipo CdiPspFasciaCostoServizioPagamento
+      allOf:
+        - $ref: '#/components/schemas/LinkRisorsa'
+    CdiPspFasciaCostoServizioPagamento:
+      description: >-
+        Risorsa che rappresenta una “Fascia di Costo” di un "Servizio di Pagamento"
+        di una "Informativa PSP"
+      allOf:
+        - $ref: '#/components/schemas/Risorsa'
+        - type: object
+          properties:
+            importoMinimo:
+              format: int64
+              type: integer
+            importoMassimo:
+              format: int64
+              type: integer
+            costoFisso:
+              format: int64
+              type: integer
+            valoreCommissione:
+              format: int64
+              type: integer
+            codiceConvenzione:
+              type: string
+    LinkCdiPspPreferenzaServizioPagamento:
+      description: Link a risorsa di tipo CdiPspPreferenzaServizioPagamento
+      allOf:
+        - $ref: '#/components/schemas/LinkRisorsa'
+    CdiPspPreferenzaServizioPagamento:
+      description: >-
+        Risorsa che rappresenta una “Preferenza” di un "Servizio di Pagamento"
+        di una "Informativa PSP"
+      allOf:
+        - $ref: '#/components/schemas/Risorsa'
+        - type: object
+          properties:
+            seller:
+              type: string
+            buyer:
+              type: string
+            costoConvenzione:
+              format: int64
+              type: integer
+    CollectionCsSoggetto:
+      type: object
+      properties:
+        uri:            
+          $ref: '#/components/schemas/Link'
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkCsSoggetto'
+      required:
+        - uri
+        - resources
+      description: Collection di risorse di tipo "Soggetto" incluse nel "Catalogo Servizi"
+    LinkCsSoggetto:
+      description: Link a risorsa di tipo CsSoggetto
+      allOf:
+        - $ref: '#/components/schemas/LinkRisorsa'
+    CsSoggetto:
+      description: >-
+        Risorsa che rappresenta un “Soggetto” nel "Catalogo Servizi"
+      allOf:
+        - $ref: '#/components/schemas/Risorsa'
+        - type: object
+          properties:
+            dataInizioValidita:
+              format: date-time
+              type: string
+            idServizio:
+              type: string
+            descrizioneServizio:
+              type: string
+            idDominio:
+              type: string
+            descrizioneEnte:
+              type: string
+    ErrorDetails:
+      type: object
+      properties:
+        type:
+          default: about:blank
+          format: uri
+          type: string
+          description: A URI reference that identifies the problem type
+          example: 'https://example.com/errors/429'
+        title:
+          type: string
+          description: A short, human-readable summary of the problem type
+          example: 'Too Many Requests'
+        status:
+          format: int32
+          exclusiveMaximum: true
+          maximum: 600
+          minimum: 100
+          type: integer
+          description: The HTTP status code generated by the server
+          example: '429'
+        detail:
+          type: string
+          description: A human-readable explanation of the problem type    
+        instance:
+          format: uri
+          type: string
+          description: A URI reference that identifies the specific occurrence of the problem 
+          example: '/resource/12345/data/abc'
+      description: 'A "problem detail" as a way to carry machine-readable details of errors in a HTTP response to avoid the need to define new error response formats for HTTP APIs'
+  responses:
+    '429':
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+      headers:
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Reset:
+          $ref: '#/components/headers/X-RateLimit-Reset'
+        Retry-After:
+          $ref: '#/components/headers/Retry-After'
+      description: Risposta utilizzata nel caso di superamento del rate limit.
+    'default':
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ErrorDetails'
+      headers:
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Reset:
+          $ref: '#/components/headers/X-RateLimit-Reset'
+      description: Risposta di default utilizzata per tutti gli status code HTTP. 
+  parameters:
+    idPsp:
+      name: 'idPsp'
+      description: Identificativo univoco risorsa "CdiPspInformativa"
+      schema:
+        type: string
+      in: path
+      required: true
+    idPspSp:
+      name: 'idPspSp'
+      description: Identificativo univoco risorsa CdiPspServizioPagamento
+      schema:
+        type: string
+      in: path
+      required: true
+    idRes:
+      name: 'idRes'
+      description: Identificativo univoco risorsa
+      schema:
+        type: string
+      in: path
+      required: true
+    NODOSPC-API-Version:
+      name: 'NODOSPC-API-Version'
+      description: Versione della API del sistema NODOSPC richiesta dal client. 
+      in: header
+      required: true
+      schema:
+        type: string
+        example: 'v1'
+  headers:
+    X-RateLimit-Limit:
+      description: Limite massimo di richieste nella time-box
+      schema:
+        format: int32
+        type: integer
+      example: 100
+    X-RateLimit-Remaining:
+      description: Numero di richieste rimanenti nella time-box fino al prossimo reset
+      schema:
+        format: int32
+        type: integer
+      example: 94
+    X-RateLimit-Reset:
+      description: Numero di secondi rimanenti nella time-box fino al prossimo reset
+      schema:
+        format: int32
+        type: integer
+      example: 94
+    Retry-After:
+      description: Indica quanti secondi attendere prima di eseguire una nuova richiesta.
+      schema:
+        format: int32
+        type: integer
+      example: 94
+  securitySchemes:
+    JWTAuth:
+      scheme: Bearer
+      type: http
+      description: |-
+        Example: 
+        > Authorization: Bearer <token>
+      x-last-modified: 1595350173792
+security:
+  - JWTAuth: []
+tags:
+  - name: catalogo-dati-informativi
+    description: Catalogo Dati Informativi
+  - name: informative-psp
+    description: Collection di risorse di tipo “Informativa PSP”
+  - name: servizi-pagamento-psp
+    description: Sub-Collection di risorse di tipo “Servizio Pagamento" associate a una risorsa di tipo "Informativa PSP”
+  - name: catalogo-servizi
+    description: Catalogo dei Servizi
