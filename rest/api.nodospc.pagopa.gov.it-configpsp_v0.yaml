@@ -117,7 +117,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PspCanaleVersamento'
+                $ref: '#/components/schemas/SubPspCanaleVersamento'
           headers:
             X-RateLimit-Limit:
               $ref: '#/components/headers/X-RateLimit-Limit'
@@ -314,7 +314,7 @@ components:
         resources:
           type: array
           items:
-            $ref: '#/components/schemas/LinkCanaleVersamento'
+            $ref: '#/components/schemas/LinkPspCanaleVersamento'
       required:
         - uri
         - resources
@@ -333,7 +333,7 @@ components:
         resources:
           type: array
           items:
-            $ref: '#/components/schemas/LinkPspCanaleVersamento'
+            $ref: '#/components/schemas/LinkSubPspCanaleVersamento'
       required:
         - uri
         - resources
@@ -344,7 +344,7 @@ components:
           type: ["GET"]
         resources: [{"rel": "psp/canali-versamento","href": "/psps/1000/canali-versamento/2000","type": ['GET']},{"rel": "psp/canali-versamento","href": "/psps/1000/canali-versamento/2001","type": ['GET']}]
       description: Sub-Collection di risorse di tipo "PSPCanaleVersamento" di un "PSP"
-    LinkCanaleVersamento:
+    LinkPspCanaleVersamento:
       description: Link a risorsa di tipo "PspCanaleVersamento" nella collection
       allOf:
         - $ref: '#/components/schemas/LinkRisorsa'
@@ -353,7 +353,7 @@ components:
           rel: 'canali-versamento'
           href: 'canali-versamento/2000'
           type: ['GET']
-    LinkPspCanaleVersamento:
+    LinkSubPspCanaleVersamento:
       description: Link a risorsa di tipo "PspCanaleVersamento" nella sub-collection di un risorsa di tipo "PSP"
       allOf:
         - $ref: '#/components/schemas/LinkRisorsa'
@@ -384,6 +384,38 @@ components:
           example:
             uri: 
               rel: 'self'
+              href: '/canali-versamento/2200'
+              type: ['GET']
+            idRes: '2200'
+            idPsp: '1000'
+            idIntermediarioPsp: '3000'
+            idCanale: '4000'
+            modelloPagamento: 'ATTIVATO_PRESSO_PSP'
+            tipoVersamento: 'AD'
+    SubPspCanaleVersamento:
+      description: >-
+        Risorsa che rappresenta un “CanaleVersamento” nella sub-collection di una risorsa di tipo "PSP"
+      allOf:
+        - $ref: '#/components/schemas/Risorsa'
+        - type: object
+          properties:
+            idPsp:
+              type: string
+            idIntermediarioPsp:
+              type: string
+            codiceIntermediarioPSp:
+              type: string
+            idCanale:
+              type: string
+            modelloPagamento:
+              type: string
+            tipoVersamento:
+              type: string
+            collectionLink:            
+              $ref: '#/components/schemas/Link'
+          example:
+            uri: 
+              rel: 'self'
               href: '/psps/1000/canali-versamento/2000'
               type: ['GET']
             idRes: '2000'
@@ -392,6 +424,10 @@ components:
             idCanale: '4000'
             modelloPagamento: 'ATTIVATO_PRESSO_PSP'
             tipoVersamento: 'AD'
+            collectionLink: 
+              rel: 'canali-versamento/2200'
+              href: '/canali-versamento/2200'
+              type: ['GET']
     ErrorDetails:
       type: object
       properties:
