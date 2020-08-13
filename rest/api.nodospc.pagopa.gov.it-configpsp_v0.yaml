@@ -1,13 +1,13 @@
 openapi: 3.0.2
 info:
-  title: 'API NODO-SPC: PSP'
+  title: 'API NODO-SPC: Configurazioni dei PSP'
   version: 0.0.1
   description: ''
   termsOfService: 'http://swagger.io/terms/'
   x-logo:
     url: ''
 servers:
-  - url: 'https://{env}/rest/psps/{version}'
+  - url: 'https://{env}/rest/configs/{version}'
     description: 'Endpoint URL'
     variables:
       env:
@@ -21,7 +21,7 @@ servers:
         description: Versione della API NODO-SPC
 paths:
   /psps:
-    summary: Operazioni su collection di risorse di tipo “Informativa”
+    summary: Operazioni su collection di risorse di tipo “PSP”
     get:
       tags:
         - psps
@@ -32,8 +32,7 @@ paths:
           content:
             application/json:
               schema:
-                anyOf:
-                  - $ref: '#/components/schemas/CollectionPsp'
+                $ref: '#/components/schemas/CollectionPsp'
           headers:
             X-RateLimit-Limit:
               $ref: '#/components/headers/X-RateLimit-Limit'
@@ -76,7 +75,7 @@ paths:
           $ref: '#/components/responses/default'
       operationId: getPsp
       summary: Get risorsa di tipo “PSP”
-  /psps/{idPsp}/canali:
+  /psps/{idPsp}/canali-versamento:
     summary: Operazioni su sub-collection di risorse di tipo “PspCanaleVersamento”
     get:
       tags:
@@ -104,13 +103,78 @@ paths:
           $ref: '#/components/responses/default'
       operationId: getSubCollectionPspCanaleVersamento
       summary: Get sub-collection di risorse di tipo “PspCanaleVersamento”
-  /psps/{idPsp}/canali/{idRes}:
+  /psps/{idPsp}/canali-versamento/{idRes}:
     summary: Operazioni su risorsa di tipo “PspCanaleVersamento”
     get:
       tags:
         - psps
       parameters:
         - $ref: '#/components/parameters/idPsp'
+        - $ref: '#/components/parameters/idRes'
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PspCanaleVersamento'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: gePspCanaleVersamentoByIdPsp
+      summary: >-
+        Get risorsa di tipo “PspCanaleVersamento” di un "PSP"
+  /canali-versamento:
+    summary: Operazioni su collection di risorse di tipo “CanaleVersamento”
+    get:
+      tags:
+        - canali-versamento
+      parameters:
+        - name: 'idPsp'
+          description: Identificativo univoco risorsa "PSP"
+          schema:
+            type: string
+          in: query
+          required: false
+        - $ref: '#/components/parameters/NODOSPC-API-Version'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                oneOf:
+                   - $ref: '#/components/schemas/CollectionPSPCanaleVersamento'
+                   - $ref: '#/components/schemas/SubCollectionPspCanaleVersamento'
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: OK
+        '429':
+          $ref: '#/components/responses/429'
+        'default':
+          $ref: '#/components/responses/default'
+      operationId: geCollectionPspCanaleVersamento
+      summary: >-
+        Get collection di risorse di tipo “PspCanaleVersamento”
+  /canali-versamento/{idRes}:
+    summary: Operazioni su risorsa di tipo “PspCanaleVersamento”
+    get:
+      tags:
+        - canali-versamento
+      parameters:
         - $ref: '#/components/parameters/idRes'
         - $ref: '#/components/parameters/NODOSPC-API-Version'
       responses:
@@ -158,9 +222,9 @@ components:
             $ref: '#/components/schemas/AllowedMethods'
       example: 
         rel:  "self"
-        href: "/informative-psp/1234"
-        type: "[GET , POST]"
-      description: Link generico
+        href: "/psps/1234"
+        type: "['GET' , 'POST']"
+      description: Link
     LinkRisorsa:
       type: object
       properties:
@@ -212,6 +276,19 @@ components:
               items:
                 anyOf:
                   - $ref: '#/components/schemas/LinkPspCanaleVersamento'
+    CollectionPSPCanaleVersamento:
+      type: object
+      properties:
+        uri:            
+          $ref: '#/components/schemas/Link'
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkPspCanaleVersamento'
+      required:
+        - uri
+        - resources
+      description: Collection di risorse di tipo "PSPCanaleVersamento"
     SubCollectionPspCanaleVersamento:
       type: object
       properties:
@@ -224,7 +301,7 @@ components:
       required:
         - uri
         - resources
-      description: Sub-Collection di risorse di tipo "CanaleVersamento" di un "PSP"
+      description: Sub-Collection di risorse di tipo "PSPCanaleVersamento" di un "PSP"
     LinkPspCanaleVersamento:
       description: Link a risorsa di tipo PspCanaleVersamento
       allOf:
@@ -308,14 +385,7 @@ components:
   parameters:
     idPsp:
       name: 'idPsp'
-      description: Identificativo univoco risorsa "CdiPspInformativa"
-      schema:
-        type: string
-      in: path
-      required: true
-    idPspSp:
-      name: 'idPspSp'
-      description: Identificativo univoco risorsa CdiPspServizioPagamento
+      description: Identificativo univoco risorsa "PSP"
       schema:
         type: string
       in: path
@@ -367,9 +437,10 @@ components:
       description: |-
         Example: 
         > Authorization: Bearer <token>
-      x-last-modified: 1595350173792
 security:
   - JWTAuth: []
 tags:
   - name: psps
     description: Collection di risorse di tipo "PSP"
+  - name: canali-versamento
+    description: Collection di risorse di tipo "Canali Versamento di un PSP"
