@@ -151,9 +151,7 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                   - $ref: '#/components/schemas/CollectionPSPCanaleVersamento'
-                   - $ref: '#/components/schemas/SubCollectionPspCanaleVersamento'
+                $ref: '#/components/schemas/CollectionPspCanaleVersamento'
           headers:
             X-RateLimit-Limit:
               $ref: '#/components/headers/X-RateLimit-Limit'
@@ -203,16 +201,19 @@ components:
     AllowedMethods:
       type: string
       enum:
-        - GET
-        - HEAD
-        - POST
-        - PUT
-        - DELETE
+        - 'GET'
+        - 'HEAD'
+        - 'POST'
+        - 'PUT'
+        - 'DELETE'
     Link:
       type: object
       properties:
         rel:
           type: string
+          enum:
+            - 'self'
+            - 'canali-versamento'
         href:
           type: string
           format: uri
@@ -222,9 +223,9 @@ components:
             $ref: '#/components/schemas/AllowedMethods'
       example: 
         rel:  "self"
-        href: "/psps/1234"
+        href: "/path-to-resource/1234"
         type: "['GET' , 'POST']"
-      description: Link
+      description: Link generico
     LinkRisorsa:
       type: object
       properties:
@@ -232,6 +233,11 @@ components:
           $ref: '#/components/schemas/Link'
       required:
         - uri
+      example: 
+        uri:
+          rel:  "self"
+          href: "/path-to-resource/1234"
+          type: "['GET']"
       description: Link a risorsa generica
     Risorsa:
       type: object
@@ -240,8 +246,15 @@ components:
       properties:
         idRes:
           type: string
+          description: Identificativo univoco della risorsa
       required:
         - idRes
+      example: 
+        uri:
+          rel:  "self"
+          href: "/path-to-resource/1234"
+          type: "['GET']"
+        idRes: '1234'
       description: Risorsa generica
     CollectionPsp:
       type: object
@@ -255,11 +268,22 @@ components:
       required:
         - uri
         - resources
+      example:
+        uri: 
+          rel: "self"
+          href: "/psps"
+          type: ["GET"]
+        resources: [{"rel": "psps","href": "/psps/1000","type": ['GET']},{"rel": "psps","href": "/psps/1001","type": ['GET']}]
       description: Collection di risorse di tipo "PSP"
     LinkPsp:
       description: Link a risorsa di tipo "PSP"
       allOf:
         - $ref: '#/components/schemas/LinkRisorsa'
+      example: 
+        uri: 
+          rel: "psps"
+          href: "/psps/1000"
+          type: ["GET"]
     Psp:
       description: >-
         Risorsa che rappresenta un "PSP"
@@ -272,11 +296,17 @@ components:
             ragioneSociale:
               type: string
             links:       
-              type: array
-              items:
-                anyOf:
-                  - $ref: '#/components/schemas/LinkPspCanaleVersamento'
-    CollectionPSPCanaleVersamento:
+              $ref: '#/components/schemas/SubCollectionPspCanaleVersamento'
+      example: 
+        uri: 
+          rel: "self"
+          href: "/psps/1000"
+          type: ["GET"]
+        idRes: "1234"
+        idPsp: "1000"
+        ragioneSociale: "Ragione Sociale del PSP"
+        links: [{"rel": "psp/canali-versamento","href": "/psps/1000/canali-versamento/2000","type": ['GET']},{"rel": "psp/canali-versamento","href": "/psps/1000/canali-versamento/2001","type": ['GET']}]
+    CollectionPspCanaleVersamento:
       type: object
       properties:
         uri:            
@@ -284,10 +314,16 @@ components:
         resources:
           type: array
           items:
-            $ref: '#/components/schemas/LinkPspCanaleVersamento'
+            $ref: '#/components/schemas/LinkCanaleVersamento'
       required:
         - uri
         - resources
+      example: 
+        uri: 
+          rel: "self"
+          href: "/canali-versamento"
+          type: ["GET"]
+        resources: [{"rel": "canali-versamento","href": "/canali-versamento/2000","type": ['GET']},{"rel": "canali-versamento","href": "/canali-versamento/2001","type": ['GET']}]
       description: Collection di risorse di tipo "PSPCanaleVersamento"
     SubCollectionPspCanaleVersamento:
       type: object
@@ -301,11 +337,31 @@ components:
       required:
         - uri
         - resources
+      example: 
+        uri: 
+          rel: "self"
+          href: "/psps/1000/canali-versamento"
+          type: ["GET"]
+        resources: [{"rel": "psp/canali-versamento","href": "/psps/1000/canali-versamento/2000","type": ['GET']},{"rel": "psp/canali-versamento","href": "/psps/1000/canali-versamento/2001","type": ['GET']}]
       description: Sub-Collection di risorse di tipo "PSPCanaleVersamento" di un "PSP"
-    LinkPspCanaleVersamento:
-      description: Link a risorsa di tipo PspCanaleVersamento
+    LinkCanaleVersamento:
+      description: Link a risorsa di tipo "PspCanaleVersamento" nella collection
       allOf:
         - $ref: '#/components/schemas/LinkRisorsa'
+      example: 
+        uri:
+          rel: 'canali-versamento'
+          href: 'canali-versamento/2000'
+          type: ['GET']
+    LinkPspCanaleVersamento:
+      description: Link a risorsa di tipo "PspCanaleVersamento" nella sub-collection di un risorsa di tipo "PSP"
+      allOf:
+        - $ref: '#/components/schemas/LinkRisorsa'
+      example: 
+        uri:
+          rel: 'psp/canali-versamento'
+          href: '/psps/1000/canali-versamento/2000'
+          type: ['GET']
     PspCanaleVersamento:
       description: >-
         Risorsa che rappresenta un “CanaleVersamento” di un "PSP"
@@ -313,6 +369,8 @@ components:
         - $ref: '#/components/schemas/Risorsa'
         - type: object
           properties:
+            idPsp:
+              type: string
             idIntermediarioPsp:
               type: string
             codiceIntermediarioPSp:
@@ -323,6 +381,17 @@ components:
               type: string
             tipoVersamento:
               type: string
+          example:
+            uri: 
+              rel: 'self'
+              href: '/psps/1000/canali-versamento/2000'
+              type: ['GET']
+            idRes: '2000'
+            idPsp: '1000'
+            idIntermediarioPsp: '3000'
+            idCanale: '4000'
+            modelloPagamento: 'ATTIVATO_PRESSO_PSP'
+            tipoVersamento: 'AD'
     ErrorDetails:
       type: object
       properties:
