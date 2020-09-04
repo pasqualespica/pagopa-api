@@ -193,7 +193,7 @@
 
 	<xs:complexType name="ctListaFasceCostoServizio">
 		<xs:sequence>
-			<xs:element type="ctFasciaCostoServizio" name="fasciaCostoServizio" maxOccurs="8" minOccurs="1"/>
+			<xs:element type="ctFasciaCostoServizio" name="fasciaCostoServizio" maxOccurs="unbounded" minOccurs="1"/>
 		</xs:sequence>
 	</xs:complexType>
 
