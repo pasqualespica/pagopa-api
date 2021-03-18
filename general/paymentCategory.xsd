@@ -68,9 +68,68 @@
         <xsd:enumeration value="9/0106106TS/"></xsd:enumeration>
 
         <!-- RIGA 42-->
+        <xsd:enumeration value="9/0107100TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0107101TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0107102SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0107103SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0107104SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0107105SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0107106SP/"></xsd:enumeration>
+        <!-- RIGA 50-->
+        <xsd:enumeration value="9/0108100SP/"></xsd:enumeration>
+
+
+        <xsd:enumeration value="9/0108101SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0108102TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0108103TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0108104AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0109100SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0110100TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0110101AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0111100TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0111101AP/"></xsd:enumeration>
+
+        <xsd:enumeration value="9/0112100TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0112101AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0112102SP/"></xsd:enumeration>
+
+        <!-- RIGA 68 -->
+        <xsd:enumeration value="9/0113100SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0114100TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0114101SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0114102SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0114103TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0114104AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0114105AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0114106AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0114107AP/"></xsd:enumeration>
+        <!-- RIGA 79 -->
+
+        <xsd:enumeration value="9/0115100TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115101TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115102AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115103TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115104SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115105AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115106SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115107AP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115108SP/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115109TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115110TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115111TS/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115112IM/"></xsd:enumeration>
+        <xsd:enumeration value="9/0115113AP/"></xsd:enumeration>
+
+        
+        <!-- RIGA 94-->
         <xsd:enumeration value="9/PLACEHOLDER/"></xsd:enumeration>
         <xsd:enumeration value="9/PLACEHOLDER/"></xsd:enumeration>
         <xsd:enumeration value="9/PLACEHOLDER/"></xsd:enumeration>
+        <xsd:enumeration value="9/PLACEHOLDER/"></xsd:enumeration>
+        <xsd:enumeration value="9/PLACEHOLDER/"></xsd:enumeration>
+        <xsd:enumeration value="9/PLACEHOLDER/"></xsd:enumeration>
+
+
 
     </xsd:restriction>
 </xsd:simpleType>
