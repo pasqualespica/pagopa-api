@@ -24,11 +24,11 @@ jobs:
       - shell: bash
         run: |
           echo "Check-----------${{ steps.chk_vers.outputs.current_vers_check_res }}-"
-      - if: steps.chk_vers.outputs.current_vers_check_res == 1
+      - if: steps.chk_vers.outputs.current_vers_check_res != 0
         name: Update version file
         run: git config user.email "pagopateam" && git config --global user.name "pagopateam" && git add ./scripts/resources/vers.txt && git commit -a -m "update file environments version" && git push
 
-      - if: steps.chk_vers.outputs.current_vers_check_res == 1
+      - if: steps.chk_vers.outputs.current_vers_check_res != 0
         name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:

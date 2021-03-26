@@ -48,20 +48,26 @@ READLINE=false
 
 filename="./scripts/resources/vers.txt"
 filenameNew="./scripts/resources/vers_.txt"
+# filename1="./scripts/resources/vers.txt"
+# filenameNew1="./scripts/resources/vers_.txt"
 ORA=`date +"%Y-%m-%d %T"`
 echo $ORA >> "$filenameNew"
 DIFFERENT=0
+EQUAL_DUMMY=0
 
 while read line; do
     if [ "$READLINE" = true ] ; then
-        VERS=`curl -k ${args[${idx}]} > tmp_.json && python ./scripts/read_vers.py tmp_.json c`
-        if [ $line != $VERS ]; then
-            #     echo ${VERSIONS[${idx}]} "UGUALI"
-            # else
-            #     echo ${VERSIONS[${idx}]} "DIVERSI"
-            DIFFERENT=1;
+        VERS=`curl -k ${args[${idx}]} > tmp_.json && python ./scripts/read_vers.py tmp_.json a | cut -d ' ' -f 3`
+        # VERS1=`curl -k ${args[${idx}]} > tmp_.json && python ./scripts/read_vers.py tmp_.json c`
+        if [ $line == $VERS ]; then
+            # echo ${VERSIONS[${idx}]} "UGUALI"
+            EQUAL_DUMMY=0
+        else
+            # echo ${VERSIONS[${idx}]} "DIVERSI"
+            DIFFERENT=$((idx+1))
         fi
         echo $VERS >> "$filenameNew"
+        # echo $VERS1 >> "$filenameNew1"
         ((idx++))
     fi
     READLINE=true
@@ -69,7 +75,10 @@ done < $filename
 
 cp $filenameNew $filename
 rm -f $filenameNew
+# cp $filenameNew1 $filename1
+# rm -f $filenameNew1
 
+## output result
 echo $DIFFERENT
 
 
